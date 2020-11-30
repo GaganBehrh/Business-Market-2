@@ -1,0 +1,312 @@
+//package Lab10.src;
+//package Lab9_Inhertitanc.src;
+//import Lab10.src.MyDate;
+import Lab10.src.MyDate;
+import Gagi_work.Lab9_Inhertitanc.src.Good;
+//package Lab9_Inhertitanc.src;
+public class Order {
+    private MyDate orderDate;
+    private double orderAmount = 0.00;
+    private String customer;
+    private Good product;
+    private int quantity;
+
+    public MyDate getOrderDate()
+    {
+        return orderDate;
+    }
+    public void setOrderDate(MyDate orderDate)
+    {
+        this.orderDate = orderDate;
+    }
+    public double getOrderAmount()
+    {
+        return orderAmount;
+    }
+    public void setOrderAmount(double orderAmount)
+    {
+        if (orderAmount > 0) {
+            this.orderAmount = orderAmount;
+        }
+    else {System.out.println("Attempting to set the orderAmount to a value less than or equal to zero");
+    }
+    }
+    public String getCustomer()
+    {
+        return customer;
+    }
+    public void setCustomer(String customer)
+    {
+        this.customer = customer;
+    }
+    public Good getProduct()
+    {
+        return product;
+    }
+
+public void setProduct(Good product)
+{
+    this.product = product;
+}
+public int getQuantity()
+{
+    return quantity;
+}
+public void setQuantity(int quantity)
+{
+    if (quantity > 0)
+    {
+        this.quantity = quantity;
+    }
+else {
+    System.out.println("Attempting to set the quantity to a value less than or equal to zero");
+}
+}
+    public static double getTaxRate()
+    {
+        return taxRate;
+    }
+    public static double taxRate = 0.05;
+public static void setTaxRate(double newRate)
+{
+    taxRate = newRate;
+}
+public static void computeTaxOn(double anAmount)
+{
+    System.out.println("The tax for " + anAmount + " is: " + anAmount* Order.taxRate);
+}
+public Order(MyDate d, double amt, String c, Good p, int q)
+{
+    orderDate = d;
+    orderAmount = amt;
+    customer = c;
+    product = p;
+    quantity =q;
+}
+public String toString()
+{
+    return quantity + " ea. " + product + " for " + customer;
+}
+public double computeTax() {
+    System.out.println("The tax for this order is: " + orderAmount * Order.taxRate);
+    return orderAmount * Order.taxRate;
+}
+public char jobSize()
+        {
+        if(quantity<=25){return'S';
+        }
+        else if(quantity<=75)
+        {
+        return'M';
+        }
+        else if(quantity<=150)
+        {
+        return'L';
+        }
+
+        }
+        public double computeTotal()
+        {
+            double total = orderAmount;
+        switch (jobSize())
+        {
+            case 'M':total = total -(orderAmount * 0.01);
+        break;
+        case 'L':
+            total = total -(orderAmount * 0.02);
+            break;
+            case 'X':total = total -(orderAmount * 0.03);
+            break;
+        }
+            if (orderAmount <= 1500)
+            {
+                total = total + computeTax();
+            }
+            return total;
+        }
+}
+}
+
+package Lab10.src;
+package Lab9_Inhertitanc.src;
+import Lab10.src.MyDate;
+public class MyDate {
+    private byte day;
+    private byte month;
+    private short year;
+
+    MyDate() {
+        this(1, 1, 1900);
+    }
+
+    MyDate(int m, int d, int y) {
+        setDate(m, d, y);
+    }
+
+    String toString() {
+        return month + "/" + day + "/" + year;
+    }
+
+    public void setDate(int m, int d, int y) {
+        if (valid(d, m, y)) {
+            day = (byte) d;
+            year = (short) y;
+            month = (byte) m;
+        }
+    }
+
+    public static void leapYears() {
+        for (int i = 1752; i <= 2020; i = i + 4) {
+            if (((i % 4 == 0) && (i % 100 != 0)) || (i % 400 == 0))
+                System.out.println("The year " + i + " is a leap year");
+        }
+    }
+
+    public int getDay() {
+        return day;
+    }
+
+    public void setDay(int day) {
+        if (valid(day, month, year)) {
+            this.day = (byte) day;
+        }
+    }
+
+    public int getMonth() {
+        return month;
+    }
+
+    public void setMonth(int month) {
+        if (valid(day, month, year)) {
+            this.month = (byte) month;
+        }
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        if (valid(day, month, year)) {
+            this.year = (short) year;
+        }
+    }
+
+    private boolean valid(int day, int month, int year) {
+        if (day > 31 || day < 1 || month > 12 || month < 1) {
+            System.out.println("Attempting to create a non-valid date " + month + "/" + day + "/" + year);
+            return false;
+        }
+        switch (month) {
+            case 4:
+            case 6:
+            case 9:
+            case 11:
+                return (day <= 30);
+            case 2:
+                return day <= 28 || (day == 29 && year % 4 == 0);
+        }
+        return true;
+    }
+
+    public boolean equals(Object o) {
+        if (o instanceof MyDate) {
+            MyDate d = (MyDate) o;
+            if ((d.day == day) && (d.month == month) && (d.year == year)) {
+                return true;
+            }
+        }
+        return false;
+    }
+}
+
+
+package Lab10.src;
+package Lab9_Inhertitanc.src;
+import Lab10.src.MyDate;
+public class TestMyDate
+{
+    public static void main(String[] args)
+    {MyDate date1 = new MyDate(11, 11, 1918);
+        MyDate date2 = new MyDate();
+        date2.setDay(11);
+        date2.setMonth(11);
+        date2.setYear(1918);
+        MyDate date3 = new MyDate();
+        date3.setDate(13, 40, -1);
+        String str1 = date1.toString();
+        String str2 = date2.toString();
+        String str3 = date3.toString();
+        System.out.println(str1);
+        System.out.println(str2);
+        System.out.println(str3);
+        MyDate.leapYears();
+        MyDate newYear = new MyDate(1, 1, 2009);
+        MyDate fiscalStart = new MyDate(1, 1, 2009);
+        if (newYear.equals(fiscalStart))
+            System.out.println("These two dates are equal");
+        else System.out.println("These two dates are not equal");
+        MyDate endOfYear = new MyDate(12,31,2009);
+        if (newYear.equals(endOfYear))
+            System.out.println("These two dates are equal");
+        else System.out.println("These two dates are not equal");
+    }}
+package Lab10.src.Order;
+package Lab9_Inhertitanc.src;
+import Lab10.src.Order;
+import Lab10.src.MyDate;
+import Lab9_Inhertitanc.src.Good;                                                                        // Its about inporting part which I cant figure out
+import Lab9_Inhertitanc.src.Solid;
+import Lab9_Inhertitanc.src.Good.UnOfMeasure;
+
+public class TestOrders
+
+{
+    public static void main(String[] args)
+{
+    MyDate date1 = new MyDate(1, 20, 2008);
+
+Solid s1 = new Solid("Acme Anvil", 1668, 0.3, UnOfMeasure.CUBIC_METER, false, 500, 0.25, 0.3);
+
+Order anvil = new Order(date1, 2000.00, "Wile E Coyote", s1, 10);
+
+MyDate date2 = new MyDate(4, 10, 2008);
+
+Solid s2 = new Solid("Acme Balloon", 1401, 15, UnOfMeasure.CUBIC_FEET, false, 10, 5, 5);
+
+Order balloons = new Order(date2, 1000.00, "Bugs Bunny", s2, 125);
+
+balloons.setQuantity(-200);
+
+System.out.println(anvil);
+
+System.out.println(balloons);
+
+System.out.println("The tax Rate is currently: " + Order.taxRate);
+
+Order.computeTaxOn(3000.00);
+
+anvil.computeTax();
+
+balloons.computeTax();
+
+Order.setTaxRate(0.06);
+
+System.out.println("The tax Rate is currently: " + Order.taxRate);
+
+Order.computeTaxOn(3000.00);
+
+anvil.computeTax();
+
+balloons.computeTax();
+
+System.out.println("The total bill for: " + anvil + " is "+ anvil.computeTotal());
+
+System.out.println("The total bill for: " + balloons + " is "+ balloons.computeTotal());
+}
+
+}
+
+
+
+
